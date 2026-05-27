@@ -10,31 +10,29 @@ export default function AlphabetTable() {
   const consonantRows = ALPHABET_TABLE.slice(9)
 
   return (
-    <div className="bg-white border border-stone-200 rounded-lg shadow-sm overflow-hidden">
+    <div className="bg-[#3B3F48] border border-[#3E424C] rounded overflow-hidden">
       <button
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between px-5 py-4 text-sm font-medium text-stone-700 hover:bg-stone-50 transition-colors"
+        className="w-full flex items-center justify-between px-4 py-2.5 text-xs text-[#6B7182] hover:text-[#dee3ec] hover:bg-[#3E424C] transition-colors"
       >
-        <span className="text-xs uppercase tracking-widest text-stone-500">Alphabet reference</span>
-        <span className="text-stone-400 text-base leading-none select-none">
-          {open ? '▲' : '▼'}
-        </span>
+        <span className="text-[10px] uppercase tracking-widest">Alphabet reference</span>
+        <span className="text-[10px] select-none">{open ? '▲' : '▼'}</span>
       </button>
 
       {open && (
-        <div className="px-5 pb-5 border-t border-stone-100 pt-4 space-y-5">
+        <div className="px-4 pb-4 border-t border-[#3E424C] pt-3 space-y-4">
           <div>
-            <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Vowels</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-1.5">Vowels</p>
             <TableSection rows={vowelRows} />
           </div>
           <div>
-            <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Consonants</p>
+            <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-1.5">Consonants</p>
             <TableSection rows={consonantRows} />
           </div>
-          <div className="text-xs text-stone-500 border-t border-stone-100 pt-3 space-y-1">
-            <p><span className="font-semibold text-stone-700">Allophony of ⟨h⟩:</span> realized as [ð] before a vowel, [θ] elsewhere.</p>
-            <p><span className="font-semibold text-stone-700">⟨t⟩</span> is a <em>linguolabial</em> stop [t̼] — the tongue tip touches the upper lip.</p>
-            <p><span className="font-semibold text-stone-700">⟨f⟩</span> is a <em>bilabial</em> fricative [ɸ] — both lips, no teeth.</p>
+          <div className="text-[11px] text-[#6B7182] border-t border-[#3E424C] pt-3 space-y-1">
+            <p><span className="font-semibold text-[#C0E2DD]">Allophony of ⟨h⟩:</span> realized as [ð] before a vowel, [θ] elsewhere.</p>
+            <p><span className="font-semibold text-[#C0E2DD]">⟨t⟩</span> is a <em>linguolabial</em> stop [t̼] — the tongue tip touches the upper lip.</p>
+            <p><span className="font-semibold text-[#C0E2DD]">⟨f⟩</span> is a <em>bilabial</em> fricative [ɸ] — both lips, no teeth.</p>
           </div>
         </div>
       )}
@@ -44,20 +42,20 @@ export default function AlphabetTable() {
 
 function TableSection({ rows }: { rows: typeof ALPHABET_TABLE }) {
   return (
-    <table className="w-full text-sm border-collapse">
+    <table className="w-full text-xs border-collapse">
       <thead>
-        <tr className="text-left text-xs text-stone-400">
-          <th className="pb-1.5 font-normal w-12">Graph</th>
-          <th className="pb-1.5 font-normal w-16">IPA</th>
+        <tr className="text-left text-[10px] text-[#6B7182]">
+          <th className="pb-1.5 font-normal w-10">Graph</th>
+          <th className="pb-1.5 font-normal w-14">IPA</th>
           <th className="pb-1.5 font-normal">Description</th>
         </tr>
       </thead>
       <tbody>
         {rows.map(row => (
-          <tr key={row.orthographic} className="border-t border-stone-100">
-            <td className="py-1.5 font-mono text-stone-800 font-semibold">{row.orthographic}</td>
-            <td className="py-1.5 font-mono text-stone-600">[{row.ipa}]</td>
-            <td className="py-1.5 text-stone-500 text-xs">{row.notes}</td>
+          <tr key={row.orthographic} className="border-t border-[#3E424C]">
+            <td className="py-1 font-mono text-[#D8456F] font-semibold">{row.orthographic}</td>
+            <td className="py-1 font-mono text-[#C0E2DD]">[{row.ipa}]</td>
+            <td className="py-1 text-[#6B7182] text-[10px]">{row.notes}</td>
           </tr>
         ))}
       </tbody>

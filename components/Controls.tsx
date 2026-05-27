@@ -17,6 +17,9 @@ interface ControlsProps {
   onGenerate: () => void
 }
 
+const selectCls = 'w-full border border-[#3E424C] rounded px-2 py-1 text-xs bg-[#3B3F48] text-[#dee3ec] focus:outline-none focus:ring-1 focus:ring-[#269BA6]'
+const labelCls = 'text-xs text-[#6B7182] block mb-1'
+
 export default function Controls({
   activePhonemes,
   wordCount,
@@ -31,43 +34,33 @@ export default function Controls({
   onGenerate,
 }: ControlsProps) {
   return (
-    <aside className="w-full lg:w-80 xl:w-88 shrink-0 flex flex-col gap-6">
-      <div className="bg-white border border-stone-200 rounded-lg p-5 shadow-sm">
-        <h2 className="text-xs uppercase tracking-widest text-stone-400 mb-4">Phoneme inventory</h2>
+    <div className="flex flex-col gap-0 text-xs">
+      <section className="px-3 py-3 border-b border-[#3E424C]">
+        <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-2.5">Phonemes</p>
         <PhonemeToggle activePhonemes={activePhonemes} onChange={onPhonemeChange} />
-      </div>
+      </section>
 
-      <div className="bg-white border border-stone-200 rounded-lg p-5 shadow-sm space-y-5">
-        <h2 className="text-xs uppercase tracking-widest text-stone-400">Generation settings</h2>
+      <section className="px-3 py-3 flex flex-col gap-3">
+        <p className="text-[10px] uppercase tracking-widest text-[#6B7182]">Settings</p>
 
-        {/* Word count slider */}
         <div>
-          <div className="flex justify-between items-baseline mb-1.5">
-            <label className="text-sm text-stone-600">Words</label>
-            <span className="text-sm font-mono text-stone-800">{wordCount}</span>
+          <div className="flex justify-between mb-1">
+            <label className={labelCls}>Words</label>
+            <span className="text-xs font-mono text-[#C0E2DD]">{wordCount}</span>
           </div>
           <input
-            type="range"
-            min={4}
-            max={40}
-            step={4}
-            value={wordCount}
+            type="range" min={4} max={40} step={4} value={wordCount}
             onChange={e => onWordCountChange(Number(e.target.value))}
-            className="w-full accent-stone-700"
+            className="w-full accent-[#269BA6] h-1"
           />
-          <div className="flex justify-between text-xs text-stone-400 mt-0.5">
+          <div className="flex justify-between text-[10px] text-[#6B7182] mt-0.5">
             <span>4</span><span>40</span>
           </div>
         </div>
 
-        {/* Syllable count */}
         <div>
-          <label className="text-sm text-stone-600 block mb-1.5">Syllables per word</label>
-          <select
-            value={syllableCount}
-            onChange={e => onSyllableCountChange(e.target.value as SyllableCount)}
-            className="w-full border border-stone-300 rounded px-3 py-1.5 text-sm bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-stone-400"
-          >
+          <label className={labelCls}>Syllables</label>
+          <select value={syllableCount} onChange={e => onSyllableCountChange(e.target.value as SyllableCount)} className={selectCls}>
             <option value="mono">Monosyllabic</option>
             <option value="di">Disyllabic</option>
             <option value="tri">Trisyllabic</option>
@@ -75,28 +68,18 @@ export default function Controls({
           </select>
         </div>
 
-        {/* Syllable shape */}
         <div>
-          <label className="text-sm text-stone-600 block mb-1.5">Syllable shape</label>
-          <select
-            value={syllableShape}
-            onChange={e => onSyllableShapeChange(e.target.value as SyllableShape)}
-            className="w-full border border-stone-300 rounded px-3 py-1.5 text-sm bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-stone-400"
-          >
+          <label className={labelCls}>Shape</label>
+          <select value={syllableShape} onChange={e => onSyllableShapeChange(e.target.value as SyllableShape)} className={selectCls}>
             <option value="open">Open (CV)</option>
             <option value="closed">Closed (CVC)</option>
             <option value="mixed">Mixed</option>
           </select>
         </div>
 
-        {/* Long vowels */}
         <div>
-          <label className="text-sm text-stone-600 block mb-1.5">Long vowels</label>
-          <select
-            value={longVowelMode}
-            onChange={e => onLongVowelModeChange(e.target.value as LongVowelMode)}
-            className="w-full border border-stone-300 rounded px-3 py-1.5 text-sm bg-white text-stone-800 focus:outline-none focus:ring-2 focus:ring-stone-400"
-          >
+          <label className={labelCls}>Long vowels</label>
+          <select value={longVowelMode} onChange={e => onLongVowelModeChange(e.target.value as LongVowelMode)} className={selectCls}>
             <option value="allowed">Allowed</option>
             <option value="disallowed">Disallowed</option>
             <option value="rare">Rare (~15%)</option>
@@ -105,11 +88,11 @@ export default function Controls({
 
         <button
           onClick={onGenerate}
-          className="w-full bg-stone-800 hover:bg-stone-700 active:bg-stone-900 text-stone-100 text-sm font-medium py-2.5 rounded transition-colors"
+          className="w-full bg-[#269BA6] hover:bg-[#1e7a84] active:bg-[#186570] text-[#dee3ec] text-xs font-medium py-1.5 rounded transition-colors"
         >
           Generate
         </button>
-      </div>
-    </aside>
+      </section>
+    </div>
   )
 }

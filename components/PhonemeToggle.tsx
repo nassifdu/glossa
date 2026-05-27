@@ -1,6 +1,6 @@
 'use client'
 
-import { SHORT_VOWELS, LONG_VOWELS, ONSET_CONSONANTS } from '@/lib/phonology'
+import { SHORT_VOWELS, LONG_VOWELS } from '@/lib/phonology'
 import type { PhonemeKey } from '@/lib/types'
 
 interface PhonemeToggleProps {
@@ -20,15 +20,28 @@ export default function PhonemeToggle({ activePhonemes, onChange }: PhonemeToggl
   function toggle(p: PhonemeKey) {
     const isActive = activePhonemes.has(p)
     const isVowel = ([...SHORT_VOWELS, ...LONG_VOWELS] as PhonemeKey[]).includes(p)
-    if (isActive && isVowel && activeVowelCount <= 2) return // minimum 2 vowels
+    if (isActive && isVowel && activeVowelCount <= 2) return
     onChange(p, !isActive)
   }
 
-  function Chip({ p, label }: { p: PhonemeKey; label?: string }) {
+  function Chip({ p }: { p: PhonemeKey }) {
     const active = activePhonemes.has(p)
     const isVowel = ([...SHORT_VOWELS, ...LONG_VOWELS] as PhonemeKey[]).includes(p)
     const isLong = (LONG_VOWELS as PhonemeKey[]).includes(p)
     const disabled = active && isVowel && activeVowelCount <= 2
+
+    let activeClass = ''
+    if (active) {
+      if (isLong) {
+        activeClass = 'bg-[#3d1727] border-[#D8456F] text-[#F7DDE4]'
+      } else if (isVowel) {
+        activeClass = 'bg-[#1a3d42] border-[#269BA6] text-[#C0E2DD]'
+      } else {
+        activeClass = 'bg-[#4a4f5c] border-[#6B7182] text-[#dee3ec]'
+      }
+    } else {
+      activeClass = 'bg-[#282C36] border-[#3E424C] text-[#6B7182]'
+    }
 
     return (
       <button
@@ -36,39 +49,33 @@ export default function PhonemeToggle({ activePhonemes, onChange }: PhonemeToggl
         disabled={disabled}
         title={disabled ? 'Keep at least 2 vowels active' : undefined}
         className={[
-          'px-2.5 py-1 rounded text-sm font-mono border transition-all',
-          active
-            ? isLong
-              ? 'bg-amber-100 border-amber-400 text-amber-800'
-              : isVowel
-              ? 'bg-sky-100 border-sky-400 text-sky-800'
-              : 'bg-stone-800 border-stone-700 text-stone-100'
-            : 'bg-stone-100 border-stone-300 text-stone-400',
-          disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:opacity-80',
+          'px-1.5 py-0.5 rounded text-xs font-mono border transition-all leading-none',
+          activeClass,
+          disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:opacity-80',
         ].join(' ')}
       >
-        {label ?? p}
+        {p}
       </button>
     )
   }
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2.5">
       <div>
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Short vowels</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-1.5">Short vowels</p>
+        <div className="flex flex-wrap gap-1">
           {SHORT_VOWELS.map(p => <Chip key={p} p={p} />)}
         </div>
       </div>
       <div>
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Long vowels</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-1.5">Long vowels</p>
+        <div className="flex flex-wrap gap-1">
           {LONG_VOWELS.map(p => <Chip key={p} p={p} />)}
         </div>
       </div>
       <div>
-        <p className="text-xs uppercase tracking-widest text-stone-400 mb-2">Consonants</p>
-        <div className="flex flex-wrap gap-1.5">
+        <p className="text-[10px] uppercase tracking-widest text-[#6B7182] mb-1.5">Consonants</p>
+        <div className="flex flex-wrap gap-1">
           {ALL_CONSONANTS.map(p => <Chip key={p} p={p} />)}
         </div>
       </div>

@@ -31,12 +31,12 @@ export default function Home() {
   const [wordCount, setWordCount] = useState(16)
   const [syllableCount, setSyllableCount] = useState<SyllableCount>('mixed')
   const [syllableShape, setSyllableShape] = useState<SyllableShape>('mixed')
-  const [longVowelMode, setLongVowelMode] = useState<LongVowelMode>('allowed')
+  const [longVowelMode, setLongVowelMode] = useState<LongVowelMode>('rare')
 
   const [words, setWords] = useState<GeneratedWord[]>([])
 
   useEffect(() => {
-    setWords(generate(makeDefaultSet(), 16, 'mixed', 'mixed', 'allowed'))
+    setWords(generate(makeDefaultSet(), 16, 'mixed', 'mixed', 'rare'))
   }, [])
 
   const handleGenerate = useCallback(() => {
@@ -58,55 +58,52 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="h-screen flex flex-col overflow-hidden bg-[#282C36]">
       {/* Header */}
-      <header className="border-b border-stone-200 bg-white px-6 py-4">
-        <div className="max-w-7xl mx-auto flex items-baseline gap-3">
-          <h1 className="text-xl font-semibold tracking-tight text-stone-900">Glossa</h1>
-          <span className="text-stone-400 text-sm">Conlang word generator</span>
-        </div>
+      <header className="shrink-0 border-b border-[#3E424C] bg-[#282C36] px-4 py-2.5 flex items-baseline gap-2.5">
+        <h1 className="text-sm font-semibold tracking-tight text-[#dee3ec]">Glossa</h1>
+        <span className="text-[#6B7182] text-xs">Conlang word generator</span>
       </header>
 
       {/* Body */}
-      <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-8 items-start">
-        {/* Sidebar controls */}
-        <Controls
-          activePhonemes={activePhonemes}
-          wordCount={wordCount}
-          syllableCount={syllableCount}
-          syllableShape={syllableShape}
-          longVowelMode={longVowelMode}
-          onPhonemeChange={handlePhonemeChange}
-          onWordCountChange={setWordCount}
-          onSyllableCountChange={setSyllableCount}
-          onSyllableShapeChange={setSyllableShape}
-          onLongVowelModeChange={setLongVowelMode}
-          onGenerate={handleGenerate}
-        />
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar */}
+        <aside className="w-52 shrink-0 border-r border-[#3E424C] bg-[#282C36] overflow-y-auto">
+          <Controls
+            activePhonemes={activePhonemes}
+            wordCount={wordCount}
+            syllableCount={syllableCount}
+            syllableShape={syllableShape}
+            longVowelMode={longVowelMode}
+            onPhonemeChange={handlePhonemeChange}
+            onWordCountChange={setWordCount}
+            onSyllableCountChange={setSyllableCount}
+            onSyllableShapeChange={setSyllableShape}
+            onLongVowelModeChange={setLongVowelMode}
+            onGenerate={handleGenerate}
+          />
+        </aside>
 
-        {/* Main area */}
-        <main className="flex-1 min-w-0 flex flex-col gap-6">
-          {/* Toolbar */}
+        {/* Main */}
+        <main className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
           <div className="flex items-center justify-between">
-            <p className="text-sm text-stone-500">
+            <p className="text-xs text-[#6B7182]">
               {words.length} word{words.length !== 1 ? 's' : ''}
             </p>
             <button
               onClick={copyAll}
-              className="text-sm text-stone-500 hover:text-stone-800 border border-stone-300 hover:border-stone-500 rounded px-3 py-1.5 transition-colors"
+              className="text-xs text-[#6B7182] hover:text-[#C0E2DD] border border-[#3E424C] hover:border-[#269BA6] rounded px-2.5 py-1 transition-colors"
             >
               Copy all
             </button>
           </div>
 
-          {/* Word grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
             {words.map((word, i) => (
               <WordCard key={i} word={word} />
             ))}
           </div>
 
-          {/* Alphabet reference */}
           <AlphabetTable />
         </main>
       </div>
