@@ -98,7 +98,7 @@ export default function Home() {
             </button>
           </div>
 
-          <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
+          <div className="grid gap-2" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(9rem, 1fr))' }}>
             {words.map((word, i) => (
               <WordCard key={i} word={word} />
             ))}

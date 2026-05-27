@@ -10,7 +10,7 @@ export default function WordCard({ word }: WordCardProps) {
       <span className="text-sm font-semibold tracking-wide text-[#dee3ec] leading-snug">
         {word.orthographic}
       </span>
-      <span className="font-mono text-[11px] text-[#C0E2DD] leading-snug">
+      <span className="font-mono text-[11px] text-[#C0E2DD] leading-snug break-all">
         {word.ipa}
       </span>
       <span className="text-[10px] text-[#6B7182] font-mono tracking-wide leading-snug">
