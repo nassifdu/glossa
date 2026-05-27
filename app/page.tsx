@@ -9,7 +9,7 @@ import type { PhonemeKey, SyllableCount, SyllableShape, LongVowelMode, Generated
 
 const DEFAULT_ACTIVE: PhonemeKey[] = [
   'a', 'e', 'i', 'o', 'u', 'ä', 'ë', 'ï', 'ö',
-  'v', 'p', 'd', 't', 'h', 'm', 'n', 'x', 'r', 'l', 'k', 'c', 'g', 'f', 's',
+  'v', 'b', 'd', 't', 'h', 'm', 'n', 'x', 'r', 'l', 'k', 'c', 'g', 'f', 's',
 ]
 
 function makeDefaultSet(): Set<PhonemeKey> {

@@ -9,7 +9,7 @@ interface PhonemeToggleProps {
 }
 
 const ALL_CONSONANTS: PhonemeKey[] = [
-  'v', 'p', 'd', 't', 'h', 'm', 'n', 'x', 'r', 'l', 'k', 'c', 'g', 'f', 's',
+  'v', 'b', 'd', 't', 'h', 'm', 'n', 'x', 'r', 'l', 'k', 'c', 'g', 'f', 's',
 ]
 
 export default function PhonemeToggle({ activePhonemes, onChange }: PhonemeToggleProps) {

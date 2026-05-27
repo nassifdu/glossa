@@ -3,9 +3,9 @@ import type { PhonemeKey, Syllable, GeneratedWord, SyllableCount, SyllableShape,
 // ─── Phoneme inventory ────────────────────────────────────────────────────────
 
 export const PHONEME_IPA: Record<PhonemeKey, string> = {
-  a: 'a', e: 'ɛ', i: 'i', o: 'ø', u: 'u',
+  a: 'a', e: 'ɛ', i: 'i', o: 'o', u: 'u',
   'ä': 'aː', 'ë': 'eː', 'ï': 'iː', 'ö': 'oː',
-  v: 'v', p: 'p', d: 'd', t: 't̼', h: 'ALLOPHONE',
+  v: 'β', b: 'b', d: 'd', t: 't̼', h: 'ALLOPHONE',
   m: 'm', n: 'n', x: 'x', r: 'ɾ', l: 'l',
   k: 'k', c: 'tʃ', g: 'ɣ', f: 'ɸ', s: 's',
 }
@@ -17,13 +17,13 @@ export const ALL_VOWELS: PhonemeKey[] = [...SHORT_VOWELS, ...LONG_VOWELS]
 // Weighted onset consonants: [phoneme, weight]
 const ONSET_WEIGHTS: [PhonemeKey, number][] = [
   ['m', 8], ['n', 7], ['l', 7], ['r', 6], ['s', 6],
-  ['p', 6], ['d', 5], ['h', 5], ['k', 5], ['v', 4],
+  ['b', 6], ['d', 5], ['h', 5], ['k', 5], ['v', 4],
   ['t', 4], ['c', 4], ['x', 3], ['g', 3], ['f', 3],
 ]
 
 // Weighted coda consonants: [phoneme, weight]
 const CODA_WEIGHTS: [PhonemeKey, number][] = [
-  ['n', 9], ['m', 7], ['l', 7], ['r', 6], ['s', 5], ['p', 5], ['k', 4],
+  ['n', 9], ['m', 7], ['l', 7], ['r', 6], ['s', 5], ['b', 5], ['k', 4],
 ]
 
 export const ONSET_CONSONANTS = new Set(ONSET_WEIGHTS.map(([p]) => p))
@@ -274,14 +274,14 @@ export const ALPHABET_TABLE: AlphabetEntry[] = [
   { orthographic: 'a', ipa: 'a', notes: 'low central vowel' },
   { orthographic: 'e', ipa: 'ɛ', notes: 'open-mid front vowel' },
   { orthographic: 'i', ipa: 'i', notes: 'close front vowel' },
-  { orthographic: 'o', ipa: 'ø', notes: 'close-mid front rounded vowel' },
+  { orthographic: 'o', ipa: 'o', notes: 'close-mid back rounded vowel' },
   { orthographic: 'u', ipa: 'u', notes: 'close back rounded vowel' },
   { orthographic: 'ä', ipa: 'aː', notes: 'long low central vowel' },
   { orthographic: 'ë', ipa: 'eː', notes: 'long mid front vowel' },
   { orthographic: 'ï', ipa: 'iː', notes: 'long close front vowel' },
-  { orthographic: 'ö', ipa: 'oː', notes: 'long close-mid front rounded vowel' },
-  { orthographic: 'v', ipa: 'v', notes: 'voiced labiodental fricative' },
-  { orthographic: 'p', ipa: 'p', notes: 'voiceless bilabial stop' },
+  { orthographic: 'ö', ipa: 'oː', notes: 'long close-mid back rounded vowel' },
+  { orthographic: 'v', ipa: 'β', notes: 'voiced bilabial fricative' },
+  { orthographic: 'b', ipa: 'b', notes: 'voiced bilabial stop' },
   { orthographic: 'd', ipa: 'd', notes: 'voiced alveolar stop' },
   { orthographic: 't', ipa: 't̼', notes: 'voiceless linguolabial stop' },
   { orthographic: 'h', ipa: 'ð / θ', notes: '⟨ð⟩ before vowels, ⟨θ⟩ elsewhere (allophonic)' },
