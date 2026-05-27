@@ -1,65 +1,115 @@
-import Image from "next/image";
+'use client'
+
+import { useState, useCallback, useEffect } from 'react'
+import Controls from '@/components/Controls'
+import WordCard from '@/components/WordCard'
+import AlphabetTable from '@/components/AlphabetTable'
+import { generateWords } from '@/lib/phonology'
+import type { PhonemeKey, SyllableCount, SyllableShape, LongVowelMode, GeneratedWord } from '@/lib/types'
+
+const DEFAULT_ACTIVE: PhonemeKey[] = [
+  'a', 'e', 'i', 'o', 'u', 'ä', 'ë', 'ï', 'ö',
+  'v', 'p', 'd', 't', 'h', 'm', 'n', 'x', 'r', 'l', 'k', 'c', 'g', 'f', 's',
+]
+
+function makeDefaultSet(): Set<PhonemeKey> {
+  return new Set(DEFAULT_ACTIVE)
+}
+
+function generate(
+  active: Set<PhonemeKey>,
+  count: number,
+  syllableCount: SyllableCount,
+  shape: SyllableShape,
+  longVowelMode: LongVowelMode
+): GeneratedWord[] {
+  return generateWords(active, count, syllableCount, shape, longVowelMode)
+}
 
 export default function Home() {
+  const [activePhonemes, setActivePhonemes] = useState<Set<PhonemeKey>>(makeDefaultSet)
+  const [wordCount, setWordCount] = useState(16)
+  const [syllableCount, setSyllableCount] = useState<SyllableCount>('mixed')
+  const [syllableShape, setSyllableShape] = useState<SyllableShape>('mixed')
+  const [longVowelMode, setLongVowelMode] = useState<LongVowelMode>('allowed')
+
+  const [words, setWords] = useState<GeneratedWord[]>([])
+
+  useEffect(() => {
+    setWords(generate(makeDefaultSet(), 16, 'mixed', 'mixed', 'allowed'))
+  }, [])
+
+  const handleGenerate = useCallback(() => {
+    setWords(generate(activePhonemes, wordCount, syllableCount, syllableShape, longVowelMode))
+  }, [activePhonemes, wordCount, syllableCount, syllableShape, longVowelMode])
+
+  function handlePhonemeChange(p: PhonemeKey, active: boolean) {
+    setActivePhonemes(prev => {
+      const next = new Set(prev)
+      if (active) next.add(p)
+      else next.delete(p)
+      return next
+    })
+  }
+
+  function copyAll() {
+    const text = words.map(w => `${w.orthographic} ${w.ipa}`).join('\n')
+    navigator.clipboard.writeText(text)
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="border-b border-stone-200 bg-white px-6 py-4">
+        <div className="max-w-7xl mx-auto flex items-baseline gap-3">
+          <h1 className="text-xl font-semibold tracking-tight text-stone-900">Glossa</h1>
+          <span className="text-stone-400 text-sm">Conlang word generator</span>
+        </div>
+      </header>
+
+      {/* Body */}
+      <div className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-8 flex flex-col lg:flex-row gap-8 items-start">
+        {/* Sidebar controls */}
+        <Controls
+          activePhonemes={activePhonemes}
+          wordCount={wordCount}
+          syllableCount={syllableCount}
+          syllableShape={syllableShape}
+          longVowelMode={longVowelMode}
+          onPhonemeChange={handlePhonemeChange}
+          onWordCountChange={setWordCount}
+          onSyllableCountChange={setSyllableCount}
+          onSyllableShapeChange={setSyllableShape}
+          onLongVowelModeChange={setLongVowelMode}
+          onGenerate={handleGenerate}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+
+        {/* Main area */}
+        <main className="flex-1 min-w-0 flex flex-col gap-6">
+          {/* Toolbar */}
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-stone-500">
+              {words.length} word{words.length !== 1 ? 's' : ''}
+            </p>
+            <button
+              onClick={copyAll}
+              className="text-sm text-stone-500 hover:text-stone-800 border border-stone-300 hover:border-stone-500 rounded px-3 py-1.5 transition-colors"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              Copy all
+            </button>
+          </div>
+
+          {/* Word grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {words.map((word, i) => (
+              <WordCard key={i} word={word} />
+            ))}
+          </div>
+
+          {/* Alphabet reference */}
+          <AlphabetTable />
+        </main>
+      </div>
     </div>
-  );
+  )
 }
