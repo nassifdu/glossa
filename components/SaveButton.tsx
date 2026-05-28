@@ -9,10 +9,11 @@ interface SaveButtonProps {
   ipa: string
 }
 
-type State = 'idle' | 'open' | 'saving' | 'saved' | 'duplicate' | 'error'
+type State = 'idle' | 'open' | 'saving' | 'saved' | 'duplicate'
 
 export default function SaveButton({ orthographic, ipa }: SaveButtonProps) {
   const [state, setState] = useState<State>('idle')
+  const [saveError, setSaveError] = useState(false)
   const [meaning, setMeaning] = useState('')
   const [wordClass, setWordClass] = useState('')
   const [, startTransition] = useTransition()
@@ -43,7 +44,8 @@ export default function SaveButton({ orthographic, ipa }: SaveButtonProps) {
       if (result.error === 'already-saved') {
         setState('duplicate')
       } else if (result.error) {
-        setState('error')
+        setSaveError(true)
+        setState('open')
       } else {
         setState('saved')
       }
@@ -123,7 +125,7 @@ export default function SaveButton({ orthographic, ipa }: SaveButtonProps) {
             Save
           </button>
 
-          {state === 'error' && (
+          {saveError && (
             <p className="text-[10px] text-[#E0A8A8]">Save failed — try again.</p>
           )}
         </div>
