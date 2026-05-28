@@ -1,8 +1,7 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { Suspense } from 'react'
 
 function LoginForm() {
   const [password, setPassword] = useState('')
@@ -32,37 +31,46 @@ function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 w-72">
-      <div className="flex flex-col gap-1">
-        <h1 className="text-sm font-semibold text-[#dee3ec]">Glossa</h1>
-        <p className="text-xs text-[#6B7182]">Enter the password to continue.</p>
+    <div className="w-full max-w-xs flex flex-col gap-6">
+      {/* Brand */}
+      <div>
+        <h1 className="text-2xl font-semibold tracking-tight text-[#dee3ec]">Glossa</h1>
+        <p className="text-sm text-[#6B7182] mt-1">Conlang word generator</p>
       </div>
 
-      <input
-        autoFocus
-        type="password"
-        value={password}
-        onChange={e => setPassword(e.target.value)}
-        placeholder="Password"
-        className="text-sm bg-[#1E2128] border border-[#3E424C] rounded px-3 py-2 text-[#dee3ec] placeholder-[#4B5060] outline-none focus:border-[#269BA6] transition-colors"
-      />
+      {/* Form */}
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-xs text-[#6B7182]">Password</label>
+          <input
+            autoFocus
+            type="password"
+            value={password}
+            onChange={e => { setPassword(e.target.value); setError(null) }}
+            placeholder="••••••••"
+            className="text-sm bg-[#1E2128] border border-[#3E424C] rounded-md px-3 py-2.5 text-[#dee3ec] placeholder-[#3E424C] outline-none focus:border-[#269BA6] transition-colors"
+          />
+        </div>
 
-      {error && <p className="text-xs text-[#E0A8A8]">{error}</p>}
+        {error && (
+          <p className="text-xs text-[#E0A8A8]">{error}</p>
+        )}
 
-      <button
-        type="submit"
-        disabled={pending || !password}
-        className="text-sm font-medium text-[#1E2128] bg-[#269BA6] hover:bg-[#C0E2DD] disabled:opacity-40 disabled:cursor-not-allowed rounded px-3 py-2 transition-colors"
-      >
-        {pending ? 'Checking…' : 'Enter'}
-      </button>
-    </form>
+        <button
+          type="submit"
+          disabled={pending || !password}
+          className="text-sm font-medium text-[#1E2128] bg-[#269BA6] hover:bg-[#C0E2DD] disabled:opacity-40 disabled:cursor-not-allowed rounded-md px-3 py-2.5 transition-colors"
+        >
+          {pending ? 'Checking…' : 'Enter'}
+        </button>
+      </form>
+    </div>
   )
 }
 
 export default function LoginPage() {
   return (
-    <div className="h-screen flex items-center justify-center bg-[#282C36]">
+    <div className="min-h-screen bg-[#282C36] flex items-center justify-center px-4">
       <Suspense>
         <LoginForm />
       </Suspense>
