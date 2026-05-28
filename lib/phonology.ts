@@ -262,6 +262,53 @@ export function generateWords(
   )
 }
 
+// ─── Orthographic parser ─────────────────────────────────────────────────────
+
+const ALL_CONSONANTS: PhonemeKey[] = ['v','b','d','t','h','m','n','x','r','l','k','c','g','f','s']
+const ALL_PHONEMES = new Set<string>([...ALL_VOWELS, ...ALL_CONSONANTS])
+
+/**
+ * Parse a hand-typed orthographic string into Syllable[] using (C)V(C) rules.
+ * Returns null if the string contains unknown characters or has no vowel.
+ */
+export function parseOrthographic(text: string): Syllable[] | null {
+  const chars = [...text.toLowerCase().trim()]
+  if (chars.length === 0) return null
+  if (!chars.every(ch => ALL_PHONEMES.has(ch))) return null
+
+  const syllables: Syllable[] = []
+  let i = 0
+
+  while (i < chars.length) {
+    // Optional onset consonant
+    let onset: string | null = null
+    if (!(ALL_VOWELS as string[]).includes(chars[i])) {
+      onset = chars[i++]
+    }
+
+    // Must find a vowel nucleus
+    if (i >= chars.length || !(ALL_VOWELS as string[]).includes(chars[i])) return null
+    const nucleus = chars[i++]
+
+    // Optional coda: only take the consonant as coda if the character after it
+    // is another consonant or end-of-string (otherwise it's the next onset)
+    let coda: string | null = null
+    if (
+      i < chars.length &&
+      !(ALL_VOWELS as string[]).includes(chars[i])
+    ) {
+      const charAfter = chars[i + 1]
+      if (charAfter === undefined || !(ALL_VOWELS as string[]).includes(charAfter)) {
+        coda = chars[i++]
+      }
+    }
+
+    syllables.push({ onset, nucleus, coda })
+  }
+
+  return syllables.length > 0 ? syllables : null
+}
+
 // ─── Alphabet reference data ──────────────────────────────────────────────────
 
 export interface AlphabetEntry {

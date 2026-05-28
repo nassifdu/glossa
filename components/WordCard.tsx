@@ -1,4 +1,5 @@
 import type { GeneratedWord } from '@/lib/types'
+import SaveButton from './SaveButton'
 
 interface WordCardProps {
   word: GeneratedWord
@@ -6,7 +7,7 @@ interface WordCardProps {
 
 export default function WordCard({ word }: WordCardProps) {
   return (
-    <div className="bg-[#3B3F48] border border-[#3E424C] rounded px-3 py-2 flex flex-col gap-0.5 hover:border-[#269BA6] transition-colors">
+    <div className="relative group bg-[#3B3F48] border border-[#3E424C] rounded px-3 py-2 flex flex-col gap-0.5 hover:border-[#269BA6] transition-colors">
       <span className="text-sm font-semibold tracking-wide text-[#dee3ec] leading-snug">
         {word.orthographic}
       </span>
@@ -16,6 +17,10 @@ export default function WordCard({ word }: WordCardProps) {
       <span className="text-[10px] text-[#6B7182] font-mono tracking-wide leading-snug">
         {word.syllableNotation}
       </span>
+      <SaveButton
+        orthographic={word.orthographic}
+        ipa={word.ipa}
+      />
     </div>
   )
 }

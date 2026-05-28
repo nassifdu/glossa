@@ -6,6 +6,12 @@ export type PhonemeKey =
   | 'k' | 'c' | 'g' | 'f' | 's'
 
 export type SyllableCount = 'mono' | 'di' | 'tri' | 'mixed'
+
+export const WORD_CLASSES = [
+  'noun', 'verb', 'adjective', 'adverb',
+  'pronoun', 'preposition', 'conjunction', 'particle', 'interjection',
+] as const
+export type WordClass = typeof WORD_CLASSES[number]
 export type SyllableShape = 'open' | 'closed' | 'mixed'
 export type LongVowelMode = 'allowed' | 'disallowed' | 'rare'
 
