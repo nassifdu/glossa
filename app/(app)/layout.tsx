@@ -1,4 +1,4 @@
-import Link from 'next/link'
+import NavLinks from '@/components/NavLinks'
 import LogoutButton from '@/components/LogoutButton'
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
@@ -7,14 +7,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
       <header className="shrink-0 border-b border-[#3E424C] bg-[#282C36] px-4 py-2.5 flex items-baseline justify-between">
         <div className="flex items-baseline gap-4">
           <h1 className="text-sm font-semibold tracking-tight text-[#dee3ec]">Glossa</h1>
-          <nav className="flex items-baseline gap-3">
-            <Link href="/wordforge" className="text-xs text-[#6B7182] hover:text-[#C0E2DD] transition-colors">
-              Wordforge
-            </Link>
-            <Link href="/lexicon" className="text-xs text-[#6B7182] hover:text-[#C0E2DD] transition-colors">
-              Lexicon
-            </Link>
-          </nav>
+          <NavLinks />
         </div>
         <LogoutButton />
       </header>
